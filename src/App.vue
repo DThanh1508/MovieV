@@ -7,11 +7,19 @@
         <v-toolbar-title>Admin page</v-toolbar-title>
 
         <v-spacer></v-spacer>
-
-        <v-btn icon>
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-
+        <v-text-field
+            class="mt-5"
+            label="What is here?"
+            prepend-inner-icon="mdi-file-find"
+            append-inner-icon="mdi-magnify"
+            @change="enter()"
+        >
+<!--          <template v-slot:label>-->
+<!--            What is <strong>icon</strong> here? <v-icon style="vertical-align: middle">-->
+<!--            mdi-file-find-->
+<!--          </v-icon>-->
+<!--          </template>-->
+        </v-text-field>
         <v-btn icon>
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
@@ -71,9 +79,13 @@ export default {
     loading: [],
    }),
   methods: {
+    enter() {
+      console.log('enter')
+    },
+
     load (i) {
       this.loading[i] = true
-      setTimeout(() => (this.loading[i] = false), 3000)
+      setTimeout(() => (this.loading[i] = false), 200)
     },
   },
 }
