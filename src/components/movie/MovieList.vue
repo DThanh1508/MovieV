@@ -1,4 +1,3 @@
-
 <template>
   <v-table height="80vh">
     <thead>
@@ -22,7 +21,7 @@
         Actions
       </th>
     </tr>
-    </thead>
+    </thead>`
     <tbody>
     <tr
         :class="{ active: index == currentIndex }"
@@ -59,37 +58,10 @@ export default {
     title: ""
   }),
   methods:{
-    getMovie(id) {
-      MovieDataService.get(id)
-          .then(response => {
-            this.currentMovie = response.data;
-            console.log(response.data);
-          })
-          .catch(e => {
-            console.log(e);
-          });
-    },
-    //delete movie
-    deleteMovie() {
-      MovieDataService.delete(this.currentMovie.id)
-          .then(response => {
-            console.log(response.data);
-            // this.$router.push({ name: "movies" });
-          })
-          .catch(e => {
-            console.log(e);
-          });
-    },
-    //get movies
-    getMovieGenres(movie) {
-      return movie.genres.join(', ');
-    },
-
     retrieveMovies() {
       MovieDataService.getAll()
           .then(response => {
             this.movies = response.data;
-            this.counter = ++this.counter;
             console.log(response.data);
           })
           .catch(e => {
@@ -115,17 +87,21 @@ export default {
             console.log(e);
           });
     },
-
     searchTitle() {
       MovieDataService.findByTitle(this.title)
           .then(response => {
-            this.movies = response.data;
+            this.tutorials = response.data;
             this.setActiveMovie(null);
             console.log(response.data);
           })
           .catch(e => {
             console.log(e);
           });
+    },
+
+    //get movies
+    getMovieGenres(movie) {
+      return movie.genres.join(', ');
     }
   },
   mounted() {
