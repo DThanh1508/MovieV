@@ -7,19 +7,12 @@
         <v-toolbar-title>Admin page</v-toolbar-title>
 
         <v-spacer></v-spacer>
-        <v-text-field
-            class="mt-5"
-            label="What is here?"
-            prepend-inner-icon="mdi-file-find"
-            append-inner-icon="mdi-magnify"
-            @change="enter()"
-        >
+        <SearchTitle/>
 <!--          <template v-slot:label>-->
 <!--            What is <strong>icon</strong> here? <v-icon style="vertical-align: middle">-->
 <!--            mdi-file-find-->
 <!--          </v-icon>-->
 <!--          </template>-->
-        </v-text-field>
         <v-btn icon>
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
@@ -61,7 +54,7 @@
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
+import SearchTitle from "@/components/movie/SearchTitle"
 // import AddMovie from "@/components/movie/AddMovie";
 // import MovieList from "@/components/movie/MovieList";
 
@@ -69,7 +62,7 @@ export default {
   name: 'App',
 
   components: {
-    // HelloWorld,
+    SearchTitle,
     // AddMovie,
     // MovieList
   },
