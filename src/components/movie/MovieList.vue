@@ -9,6 +9,9 @@
         Plot
       </th>
       <th class="text-left">
+        Image
+      </th>
+      <th class="text-left">
         Genres
       </th>
       <th class="text-left">
@@ -21,16 +24,29 @@
         Actions
       </th>
     </tr>
-    </thead>`
+    </thead>
+    <v-text-field
+        class="mt-5"
+        label="What is here?"
+        prepend-inner-icon="mdi-file-find"
+        append-inner-icon="mdi-magnify"
+        v-model="title"
+        @change="filter()"
+    ></v-text-field>
+    <v-btn @click="searchTitle">Search</v-btn>
+    <v-btn @click="removeAllMovies">Remove </v-btn>
     <tbody>
     <tr
         :class="{ active: index == currentIndex }"
-        v-for="(movie, index) in movies"
+        v-for="(movie, index) in filteredMovies"
         :key="index"
         @click="setActiveMovie(movie, index)"
     >
-      <td>{{ index }}</td>
+      <td>{{ index +1 }}</td>
       <td>{{ movie.plot }}</td>
+      <td>
+        <v-img :src="movie.img"></v-img>
+      </td>
       <td>{{ getMovieGenres(movie) }}</td>
 <!--      <td>{{ movie.genres }}</td>-->
       <td>{{ movie.title }}</td>
@@ -38,7 +54,7 @@
       <td class="text-center">
         <v-btn color="primary">Edit</v-btn>
         &ensp;
-        <v-btn color="error" @click="deleteMovie">Delete</v-btn>
+        <v-btn color="error" @click="RemoveAllMovies">Delete</v-btn>
       </td>
     </tr>
     </tbody>
@@ -55,14 +71,25 @@ export default {
     movies: [],
     currentMovie: null,
     currentIndex: -1,
-    title: ""
+    title: "",
+    filteredMovies: [],
   }),
+
+  async mounted() {
+    await this.retrieveMovies();
+  },
+
   methods:{
-    retrieveMovies() {
+    filter(){
+      this.filteredMovies = this.movies.filter(movie => movie.title.toLowerCase().includes(this.title.toLowerCase()));
+    },
+    async retrieveMovies() {
       MovieDataService.getAll()
           .then(response => {
             this.movies = response.data;
             console.log(response.data);
+            this.filter();
+
           })
           .catch(e => {
             console.log(e);
@@ -77,6 +104,17 @@ export default {
       this.currentMovie = movie;
       this.currentIndex = movie ? index : -1;
     },
+    removeMovie() {
+      MovieDataService.delete(this.currentMovie.id)
+          .then(response => {
+            console.log(response.data);
+            this.$router.push({ name: "movie" });
+          })
+          .catch(e => {
+            console.log(e);
+          });
+    }
+    ,
     removeAllMovies() {
       MovieDataService.deleteAll()
           .then(response => {
@@ -90,7 +128,7 @@ export default {
     searchTitle() {
       MovieDataService.findByTitle(this.title)
           .then(response => {
-            this.tutorials = response.data;
+            this.movie = response.data;
             this.setActiveMovie(null);
             console.log(response.data);
           })
@@ -104,11 +142,6 @@ export default {
       return movie.genres.join(', ');
     }
   },
-  mounted() {
-    this.retrieveMovies();
-    // this.message = '';
-    // this.getMovie(this.$route.params.id);
-  }
 }
 </script>
 
