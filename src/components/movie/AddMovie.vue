@@ -50,7 +50,13 @@
           <!--            multiple-->
           <!--        >-->
           <!--        </v-select>-->
-
+          <v-text-field
+              v-model="movie.img"
+              label="Img"
+              required
+              name="genres"
+              id="genres"
+          ></v-text-field>
           <v-text-field
               v-model="movie.genres"
               label="Genres"
